@@ -5,8 +5,8 @@ def main():
     url = "https://nhlstatisticsforohtu.herokuapp.com/players"
     response = requests.get(url).json()
 
-    print("JSON-muotoinen vastaus:")
-    print(response)
+    #print("JSON-muotoinen vastaus:")
+    #print(response)
 
     players = []
 
@@ -15,14 +15,22 @@ def main():
             player_dict['name'],
             player_dict['team'],
             player_dict['goals'],
-            player_dict['assists']
+            player_dict['assists'],
+            player_dict['nationality']
         )
-        if (player_dict['nationality'] == "FIN"):
-            players.append(player)
+        players.append(player)
 
-    print("Oliot:")
+    print("Players:")
 
-    for player in players:
+    finnish_players = list(filter(lambda p: p.nationality == "FIN", players))
+    finnish_players_by_points = sorted(
+        finnish_players,
+        key = lambda p: p.goals + p.assists,
+        reverse=True
+    )
+    
+
+    for player in finnish_players_by_points:
         print(player)
 
 if __name__ == "__main__":
